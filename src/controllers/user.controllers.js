@@ -206,7 +206,7 @@ const changePassword = asyncHandler(async (req, res) => {
 
 const currentUser = asyncHandler(async (req, res) => {
     return res.status(200)
-    .json(new ApiResponse(200, req.user, "User Details Fetched Successfully"))
+    .json(new ApiResponse(200, req.user.fullname, "User Details Fetched Successfully"))
 })
 
 const updateAccountDetails = asyncHandler(async (req, res) =>{
@@ -232,8 +232,8 @@ const updateAccountDetails = asyncHandler(async (req, res) =>{
 })
 
 const updateUserAvatar = asyncHandler(async (req, res) => {
-    const avatarLocalPath = req.file?.avatar[0]?.path;
-
+    const avatarLocalPath = req.files?.avatar?.[0]?.path;
+    
     if (!avatarLocalPath) {
         throw new ApiError(400, "Avatar file is required");
     }
@@ -258,7 +258,9 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
 })
 
 const updateUserCoverImage = asyncHandler(async (req, res) => {
-    const userCoverImageLocalPath = req.file?.avatar[0]?.path;
+    const userCoverImageLocalPath = req.file?.coverImage?.[0]?.path;
+    console.log("userCoverImageLocalPath : ", userCoverImageLocalPath);
+
 
     if (!userCoverImageLocalPath) {
         throw new ApiError(400, "Cover Image is required");
@@ -271,7 +273,7 @@ const updateUserCoverImage = asyncHandler(async (req, res) => {
     }
 
     await User.findByIdAndUpdate(req.user._id, {
-        $ser:{
+        $set:{
             coverImage: coverImage.url
         }
     }, 
