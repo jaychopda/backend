@@ -232,7 +232,7 @@ const updateAccountDetails = asyncHandler(async (req, res) =>{
 })
 
 const updateUserAvatar = asyncHandler(async (req, res) => {
-    const avatarLocalPath = req.files?.avatar?.[0]?.path;
+    const avatarLocalPath = req.files?.avatar[0]?.path;
     
     if (!avatarLocalPath) {
         throw new ApiError(400, "Avatar file is required");
@@ -258,7 +258,7 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
 })
 
 const updateUserCoverImage = asyncHandler(async (req, res) => {
-    const userCoverImageLocalPath = req.file?.coverImage?.[0]?.path;
+    const userCoverImageLocalPath = req.files?.coverImage[0]?.path;
     console.log("userCoverImageLocalPath : ", userCoverImageLocalPath);
 
 
@@ -286,9 +286,9 @@ const updateUserCoverImage = asyncHandler(async (req, res) => {
 })
 
 const getUserChannelProfile = asyncHandler(async(req, res) => {
-    const {username} = req.params;
+    const {username} = req.body;
 
-    if(!username?.trim()){
+    if(!username){
         throw new ApiError(400, "Username is required")
     }
 
